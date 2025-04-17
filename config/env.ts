@@ -10,6 +10,9 @@ interface EnvVars {
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
   GOOGLE_REDIRECT_URL: string;
+
+  MAIL_USER: string;
+  MAIL_PASS: string;
 }
 
 // Function to parse environment variables safely
@@ -24,6 +27,9 @@ const getEnv = (): EnvVars => {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
     GOOGLE_REDIRECT_URL: process.env.GOOGLE_REDIRECT_URL || "",
+
+    MAIL_USER: process.env.MAIL_USER || "",
+    MAIL_PASS: process.env.MAIL_PASS || "",
   };
 };
 

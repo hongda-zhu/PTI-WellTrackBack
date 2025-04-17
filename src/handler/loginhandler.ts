@@ -1,5 +1,8 @@
+import { randomUUID } from "crypto";
 import { Context } from "hono";
+import ENV from "../../config/env";
 import { db } from "../../lib/db";
+import { transporter } from "../../lib/mailer";
 
 const validateUser = async (email: string, password: string) => {
   const result = await db`SELECT * FROM users WHERE email = ${email}`;
@@ -36,12 +39,57 @@ export const register_handler = async (c: Context) => {
     if (existingUser.length > 0) {
       return c.json({ message: "Email is already registered" }, 400);
     }
-    const hashedPassword = password; // Use bcrypt to hash the password
-    await db`INSERT INTO users (email, password) VALUES (${email}, ${hashedPassword})`;
-    return c.json({ message: "User registered successfully" });
+
+    // Hashear la contraseña (recomendado)
+
+    const token = randomUUID();
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 min
+
+    await db`
+      INSERT INTO token (email, token, password, expires_at)
+      VALUES (${email}, ${token}, ${password}, ${expiresAt})
+      ON CONFLICT (email) DO UPDATE
+        SET token = ${token}, password = ${password}, expires_at = ${expiresAt}
+    `;
+
+    const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
+    console.log(ENV.MAIL_USER, ENV.MAIL_PASS);
+    await transporter.sendMail({
+      from: ENV.MAIL_USER,
+      to: email,
+      subject: "Verifica tu correo",
+      html: `<p>Haz clic aquí para verificar tu correo:</p><a href="${verificationUrl}">${verificationUrl}</a>`,
+    });
+
+    return c.json({ message: "Correo de verificación enviado" });
   } catch (e) {
     const errorMessage =
       e instanceof Error ? e.message : "An unknown error occurred";
     return c.json({ message: errorMessage }, 400);
   }
+};
+
+export const verify_email_handler = async (c: Context) => {
+  const token = c.req.query("token");
+  console.log(token);
+
+  const result = await db`SELECT * FROM token WHERE token = ${token}`;
+  if (result.length === 0) {
+    return c.json({ message: "Token inválido o expirado" }, 400);
+  }
+
+  const { email, password, expires_at } = result[0];
+  if (new Date() > expires_at) {
+    return c.json({ message: "Token expirado" }, 400);
+  }
+
+  // Crear el usuario
+  await db`INSERT INTO users (email, password) VALUES (${email}, ${password})`;
+
+  // Eliminar el token
+  await db`DELETE FROM token WHERE token = ${token}`;
+
+  return c.json({
+    message: "Correo verificado. Usuario registrado con éxito.",
+  });
 };

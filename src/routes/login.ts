@@ -1,6 +1,10 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import { LoginParamsSchema, RegisterParamsSchema } from "../../doc/schemas"; // Adjust the import path as necessary
-import { login_handler, register_handler } from "../handler/loginhandler";
+import {
+  login_handler,
+  register_handler,
+  verify_email_handler,
+} from "../handler/loginhandler";
 
 export const login = createRoute({
   method: "post",
@@ -56,4 +60,28 @@ export const register = createRoute({
     },
   },
   handler: register_handler,
+});
+
+export const verifyemail = createRoute({
+  method: "get",
+  path: "/verify-email",
+  request: {
+    query: z.object({
+      token: z.string(),
+    }),
+  },
+  responses: {
+    200: {
+      description: "Email verified successfully",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid request" },
+        },
+      },
+      description: "Invalid request",
+    },
+  },
+  handler: verify_email_handler,
 });
