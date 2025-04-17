@@ -9,8 +9,7 @@ export const delete_account_handler = async (c: Context) => {
       return c.json({ message: "User not found" }, 404);
     }
     return c.json({ message: "Account deleted successfully" });
-  }
-  catch (e) {
+  } catch (e) {
     const errorMessage =
       e instanceof Error ? e.message : "An unknown error occurred";
     return c.json({ message: errorMessage }, 500);
@@ -42,7 +41,19 @@ export const change_password_handler = async (c: Context) => {
   }
 };
 
-export const update_usrer_settings_handler = async (c: Context) => {
-    const userSettings = await c.req.json();
-    const { id } = userSettings;
-    
+export const update_user_settings_handler = async (c: Context) => {
+  const userSettings = await c.req.json();
+  const { id } = userSettings;
+  try {
+    const result =
+      await db`UPDATE conf_user SET ${userSettings} WHERE id = ${id}`;
+    if (result.affectedRows === 0) {
+      return c.json({ message: "User not found" }, 404);
+    }
+    return c.json({ message: "User settings updated successfully" });
+  } catch (e) {
+    const errorMessage =
+      e instanceof Error ? e.message : "An unknown error occurred";
+    return c.json({ message: errorMessage }, 500);
+  }
+};

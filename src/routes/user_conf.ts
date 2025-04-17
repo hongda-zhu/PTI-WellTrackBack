@@ -3,6 +3,7 @@ import { UpdateUserSettingsSchema } from "../../doc/schemas";
 import {
   change_password_handler,
   delete_account_handler,
+  update_user_settings_handler,
 } from "../handler/user_conf_handler";
 
 export const delete_account = createRoute({
@@ -86,5 +87,5 @@ export const updateUserSettings = createRoute({
       description: "Invalid request",
     },
   },
-  handler: update_usrer_settings_handler,
+  handler: update_user_settings_handler,
 });

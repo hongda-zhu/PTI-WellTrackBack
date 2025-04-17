@@ -104,6 +104,7 @@ export const ShowChallengesSchema = ChallengeSchema.pick({
 
 export const UpdateUserSettingsSchema = z
   .object({
+    user_id: z.number().openapi({ example: 123 }),
     auto_monitoring: z.boolean().openapi({ example: true }),
     camera: z.boolean().openapi({ example: true }),
     alert_frequency: z.number().openapi({ example: 90 }),
