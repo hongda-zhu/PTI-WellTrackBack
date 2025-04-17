@@ -2,6 +2,7 @@ import { createRoute, z } from "@hono/zod-openapi";
 import { LoginParamsSchema, RegisterParamsSchema } from "../../doc/schemas"; // Adjust the import path as necessary
 import {
   login_handler,
+  recover_password_handler,
   register_handler,
   verify_email_handler,
 } from "../handler/loginhandler";
@@ -84,4 +85,34 @@ export const verifyemail = createRoute({
     },
   },
   handler: verify_email_handler,
+});
+
+export const recoverPassword = createRoute({
+  method: "post",
+  path: "/recover_password",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            email: z.string().email(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "Password recovery email sent",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid email" },
+        },
+      },
+      description: "Invalid email",
+    },
+  },
+  handler: recover_password_handler,
 });

@@ -53,7 +53,6 @@ export const register_handler = async (c: Context) => {
     `;
 
     const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
-    console.log(ENV.MAIL_USER, ENV.MAIL_PASS);
     await transporter.sendMail({
       from: ENV.MAIL_USER,
       to: email,
@@ -92,4 +91,27 @@ export const verify_email_handler = async (c: Context) => {
   return c.json({
     message: "Correo verificado. Usuario registrado con éxito.",
   });
+};
+
+export const recover_password_handler = async (c: Context) => {
+  const { email }: { email: string } = await c.req.json();
+  try {
+    const result = await db`SELECT * FROM users WHERE email = ${email}`;
+    if (result.length === 0) {
+      return c.json({ message: "Email not found" }, 404);
+    }
+    const user = result[0];
+    const password = user.password;
+    await transporter.sendMail({
+      from: ENV.MAIL_USER,
+      to: email,
+      subject: "Contraseña olvidada",
+      html: `<p>Tu contraseña es: ${password}</p>`,
+    });
+    return c.json({ message: "Password sent to email" });
+  } catch (e) {
+    const errorMessage =
+      e instanceof Error ? e.message : "An unknown error occurred";
+    return c.json({ message: errorMessage }, 500);
+  }
 };

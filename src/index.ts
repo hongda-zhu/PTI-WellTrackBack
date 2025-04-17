@@ -3,7 +3,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { apiReference } from "@scalar/hono-api-reference";
 import * as dotenv from "dotenv";
 import ENV from "../config/env";
-import { login, register, verifyemail } from "./routes/login";
+import { login, recoverPassword, register, verifyemail } from "./routes/login";
 import { calculate_perc_posture } from "./routes/main";
 import { getReport } from "./routes/report_conf";
 
@@ -27,6 +27,11 @@ app.openapi(register, async (c) => {
 
 app.openapi(verifyemail, async (c) => {
   const res = await verifyemail.handler(c);
+  return res;
+});
+
+app.openapi(recoverPassword, async (c) => {
+  const res = await recoverPassword.handler(c);
   return res;
 });
 
