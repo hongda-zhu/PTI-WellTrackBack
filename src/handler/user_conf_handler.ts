@@ -1,23 +1,16 @@
 import { Context } from "hono";
 import { db } from "../../lib/db";
 
-export const change_email_handler = async (c: Context) => {
-  const { email, id }: { email: string; id: string } = await c.req.json();
+export const delete_account_handler = async (c: Context) => {
+  const { email }: { email: string } = await c.req.json();
   try {
-    const sameemail =
-      await db`SELECT * FROM users WHERE id = ${id} AND email = ${email}`;
-    if (sameemail.length > 0) {
-      return c.json(
-        { message: "New email cannot be the same as the old email" },
-        400
-      );
-    }
-    const result = await db`UPDATE users SET email = ${email} WHERE id = ${id}`;
+    const result = await db`DELETE FROM users WHERE email = ${email}`;
     if (result.affectedRows === 0) {
       return c.json({ message: "User not found" }, 404);
     }
-    return c.json({ message: "Email changed successfully" });
-  } catch (e) {
+    return c.json({ message: "Account deleted successfully" });
+  }
+  catch (e) {
     const errorMessage =
       e instanceof Error ? e.message : "An unknown error occurred";
     return c.json({ message: errorMessage }, 500);

@@ -1,13 +1,13 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { UpdateUserSettingsSchema } from "../../doc/schemas";
 import {
-  change_email_handler,
   change_password_handler,
+  delete_account_handler,
 } from "../handler/user_conf_handler";
 
-export const change_email = createRoute({
+export const delete_account = createRoute({
   method: "post",
-  path: "/change_email",
+  path: "/delete_account",
   request: {
     body: {
       content: {
@@ -19,7 +19,7 @@ export const change_email = createRoute({
   },
   responses: {
     200: {
-      description: "Email changed",
+      description: "Account deleted",
     },
     401: {
       content: {
@@ -30,7 +30,7 @@ export const change_email = createRoute({
       description: "Invalid email",
     },
   },
-  handler: change_email_handler,
+  handler: delete_account_handler,
 });
 
 export const change_password = createRoute({
