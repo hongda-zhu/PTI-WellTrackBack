@@ -10,7 +10,7 @@ import {
   show_weekly_analysis,
   update_data,
 } from "./routes/main";
-import { getReport } from "./routes/report_conf";
+import { getReport, updateReportSettings } from "./routes/report_conf";
 import {
   change_password,
   delete_account,
@@ -77,6 +77,26 @@ app.openapi(show_calendar, async (c) => {
 
 app.openapi(show_challenges, async (c) => {
   const res = await show_challenges.handler(c);
+  return res;
+});
+
+app.openapi(delete_account, async (c) => {
+  const res = await delete_account.handler(c);
+  return res;
+});
+
+app.openapi(change_password, async (c) => {
+  const res = await change_password.handler(c);
+  return res;
+});
+
+app.openapi(updateUserSettings, async (c) => {
+  const res = await updateUserSettings.handler(c);
+  return res;
+});
+
+app.openapi(updateReportSettings, async (c) => {
+  const res = await updateReportSettings.handler(c);
   return res;
 });
 

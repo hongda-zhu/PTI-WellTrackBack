@@ -1,6 +1,9 @@
 import { createRoute } from "@hono/zod-openapi";
 import { UpdateReportSettingsSchema } from "../../doc/schemas";
-import { get_report_handler } from "../handler/reporthandler";
+import {
+  get_report_handler,
+  update_report_settings_handler,
+} from "../handler/reporthandler";
 
 export const updateReportSettings = createRoute({
   method: "patch",
@@ -27,6 +30,7 @@ export const updateReportSettings = createRoute({
       description: "Invalid request",
     },
   },
+  handler: update_report_settings_handler,
 });
 
 export const getReport = createRoute({

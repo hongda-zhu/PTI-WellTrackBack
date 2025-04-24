@@ -43,10 +43,14 @@ export const change_password_handler = async (c: Context) => {
 
 export const update_user_settings_handler = async (c: Context) => {
   const userSettings = await c.req.json();
-  const { id } = userSettings;
+  const { user_id, ...settings } = userSettings;
+  if (!user_id || Object.keys(settings).length === 0) {
+    return c.json({ message: "Invalid request" }, 400);
+  }
   try {
-    const result =
-      await db`UPDATE conf_user SET ${userSettings} WHERE id = ${id}`;
+    const result = await db`UPDATE conf_user SET ${db(
+      userSettings
+    )} WHERE user_id = ${user_id}`;
     if (result.affectedRows === 0) {
       return c.json({ message: "User not found" }, 404);
     }
