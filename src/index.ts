@@ -4,7 +4,12 @@ import { apiReference } from "@scalar/hono-api-reference";
 import * as dotenv from "dotenv";
 import ENV from "../config/env";
 import { login, recoverPassword, register, verifyemail } from "./routes/login";
-import { calculate_perc_posture } from "./routes/main";
+import {
+  show_calendar,
+  show_challenges,
+  show_weekly_analysis,
+  update_data,
+} from "./routes/main";
 import { getReport } from "./routes/report_conf";
 import {
   change_password,
@@ -55,10 +60,24 @@ app.openapi(recoverPassword, async (c) => {
   return res;
 });
 
-app.openapi(calculate_perc_posture, (c) => {
-  return c.json({
-    number: 75,
-  });
+app.openapi(update_data, async (c) => {
+  const res = await update_data.handler(c);
+  return res;
+});
+
+app.openapi(show_weekly_analysis, async (c) => {
+  const res = await show_weekly_analysis.handler(c);
+  return res;
+});
+
+app.openapi(show_calendar, async (c) => {
+  const res = await show_calendar.handler(c);
+  return res;
+});
+
+app.openapi(show_challenges, async (c) => {
+  const res = await show_challenges.handler(c);
+  return res;
 });
 
 app.openapi(getReport, async (c) => {

@@ -121,7 +121,7 @@ export const delete_challenge = createRoute({
     200: {
       description: "Challenge deleted",
     },
-    401: {
+    400: {
       content: {
         "application/json": {
           schema: { message: "Invalid request" },

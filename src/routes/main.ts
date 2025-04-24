@@ -1,115 +1,190 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
+import { NumberSchema } from "../../doc/schemas";
 import {
-  CalendarSchema,
-  NumberSchema,
-  PostureCorrectionSchema,
-  ShowChallengesSchema,
-  StringSchema,
-} from "../../doc/schemas";
+  MainDataHandler,
+  ShowCalendarHandler,
+  ShowChallengesHandler,
+  WeeklyAnalysisHandler,
+} from "../handler/mainhandler";
 
-export const calculate_perc_posture = createRoute({
-  method: "get",
-  path: "/calculate_perc_posture",
-  responses: {
-    200: {
+export const update_data = createRoute({
+  method: "post",
+  path: "/update_data",
+  request: {
+    body: {
       content: {
         "application/json": {
-          schema: NumberSchema,
+          schema: z.object({
+            user_id: z.number(),
+          }),
         },
       },
-      description: "Percentage of posture correct",
     },
   },
-});
-
-export const calculate_breaks = createRoute({
-  method: "get",
-  path: "/calculate_breaks",
   responses: {
     200: {
+      description: "Data updated",
+    },
+    400: {
       content: {
         "application/json": {
-          schema: NumberSchema,
+          schema: { message: "Invalid request" },
         },
       },
-      description: "Number of breaks",
+      description: "Invalid request",
     },
   },
+  handler: MainDataHandler,
 });
 
-export const calculate_hydration_attempts = createRoute({
-  method: "get",
-  path: "/calculate_hydration_attempts",
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: NumberSchema,
-        },
-      },
-      description: "Number of hydration attempts",
-    },
-  },
-});
+// export const calculate_perc_posture = createRoute({
+//   method: "get",
+//   path: "/calculate_perc_posture",
+//   responses: {
+//     200: {
+//       content: {
+//         "application/json": {
+//           schema: NumberSchema,
+//         },
+//       },
+//       description: "Percentage of posture correct",
+//     },
+//   },
+// });
 
-export const calculate_level_tiredness = createRoute({
-  method: "get",
-  path: "/calculate_level_tiredness",
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: StringSchema,
-        },
-      },
-      description: "Level of tiredness",
-    },
-  },
-});
+// export const calculate_breaks = createRoute({
+//   method: "get",
+//   path: "/calculate_breaks",
+//   responses: {
+//     200: {
+//       content: {
+//         "application/json": {
+//           schema: NumberSchema,
+//         },
+//       },
+//       description: "Number of breaks",
+//     },
+//   },
+// });
+
+// export const calculate_hydration_attempts = createRoute({
+//   method: "get",
+//   path: "/calculate_hydration_attempts",
+//   responses: {
+//     200: {
+//       content: {
+//         "application/json": {
+//           schema: NumberSchema,
+//         },
+//       },
+//       description: "Number of hydration attempts",
+//     },
+//   },
+// });
+
+// export const calculate_level_tiredness = createRoute({
+//   method: "get",
+//   path: "/calculate_level_tiredness",
+//   responses: {
+//     200: {
+//       content: {
+//         "application/json": {
+//           schema: StringSchema,
+//         },
+//       },
+//       description: "Level of tiredness",
+//     },
+//   },
+// });
 
 export const show_weekly_analysis = createRoute({
-  method: "get",
+  method: "post",
   path: "/show_weekly_analysis",
-  responses: {
-    200: {
+  request: {
+    body: {
       content: {
         "application/json": {
-          schema: PostureCorrectionSchema,
+          schema: z.object({
+            user_id: z.number(),
+          }),
         },
       },
-      description: "Show weekly analysis",
     },
   },
+  responses: {
+    200: {
+      description: "Show weekly analysis",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid request" },
+        },
+      },
+      description: "Invalid request",
+    },
+  },
+  handler: WeeklyAnalysisHandler,
 });
 
 export const show_calendar = createRoute({
-  method: "get",
+  method: "post",
   path: "/show_calendar",
-  responses: {
-    200: {
+  request: {
+    body: {
       content: {
         "application/json": {
-          schema: CalendarSchema,
+          schema: z.object({
+            user_id: z.number(),
+          }),
         },
       },
-      description: "User challenge completion calendar",
     },
   },
+  responses: {
+    200: {
+      description: "User challenge completion calendar",
+    },
+    401: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid request" },
+        },
+      },
+      description: "Invalid request",
+    },
+  },
+  handler: ShowCalendarHandler,
 });
 
 export const show_challenges = createRoute({
-  method: "get",
+  method: "post",
   path: "/show_challenges",
-  responses: {
-    200: {
+  request: {
+    body: {
       content: {
         "application/json": {
-          schema: ShowChallengesSchema,
+          schema: z.object({
+            user_id: z.number(),
+          }),
         },
       },
-      description: "Show challenges",
     },
   },
+  responses: {
+    200: {
+      description: "Show challenges",
+    },
+    401: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid request" },
+        },
+      },
+      description: "Invalid request",
+    },
+  },
+  handler: ShowChallengesHandler,
 });
 
 export const show_concentration_time = createRoute({

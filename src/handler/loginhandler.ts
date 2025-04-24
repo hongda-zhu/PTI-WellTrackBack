@@ -83,7 +83,11 @@ export const verify_email_handler = async (c: Context) => {
   }
 
   // Crear el usuario
-  await db`INSERT INTO users (email, password) VALUES (${email}, ${password})`;
+  const [user] =
+    await db`INSERT INTO users (email, password) VALUES (${email}, ${password}) RETURNING id`;
+
+  await db`INSERT INTO conf_user (user_id) = ${user.id}`;
+  await db`INSERT INTO conf_report (user_id) = ${user.id}`;
 
   // Eliminar el token
   await db`DELETE FROM token WHERE token = ${token}`;

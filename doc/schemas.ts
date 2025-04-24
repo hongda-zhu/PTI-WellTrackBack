@@ -1,5 +1,4 @@
 import { z } from "@hono/zod-openapi";
-import { date } from "zod";
 
 export const ParamsSchema = z.object({
   id: z.string().openapi({
@@ -53,16 +52,13 @@ export const StringSchema = z.object({
 });
 
 export const PostureCorrectionSchema = z.object({
-  week: z.string().openapi({
-    example: "2022-01-01",
-  }),
-  posture_correction: z.array(
+  postures: z.array(
     z.object({
-      date: date().openapi({
-        example: "2022-01-01",
-      }),
-      percentage: z.number().openapi({
+      posture_correction: z.number().openapi({
         example: 90,
+      }),
+      created_at: z.string().openapi({
+        example: "2022-01-01",
       }),
     })
   ),
@@ -139,3 +135,33 @@ export const UpdatePomodoroSettingsSchema = z
     break_restart: z.boolean().openapi({ example: true }),
   })
   .partial();
+
+export const AiDataSchema = z.object({
+  posture_correction: z.number().openapi({
+    example: 90,
+  }),
+  hydration: z.boolean().openapi({
+    example: true,
+  }),
+  breaks: z.boolean().openapi({
+    example: true,
+  }),
+  nivel_of_stress: z.number().openapi({
+    example: 90,
+  }),
+});
+
+export const MainDataSchema = z.object({
+  posture_correction: z.number().openapi({
+    example: 90,
+  }),
+  hydration: z.number().openapi({
+    example: 90,
+  }),
+  breaks: z.number().openapi({
+    example: 90,
+  }),
+  nivel_of_stress: z.number().openapi({
+    example: 90,
+  }),
+});
