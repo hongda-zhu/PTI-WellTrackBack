@@ -149,4 +149,7 @@ app.get(
 );
 
 // Set up Swagger UI
-export default app;
+export default {
+  port: 3001, // <-- Set Bun port here
+  fetch: app.fetch,
+};
