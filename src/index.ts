@@ -10,6 +10,11 @@ import {
   show_weekly_analysis,
   update_data,
 } from "./routes/main";
+import {
+  create_challenge,
+  delete_challenge,
+  modify_challenge,
+} from "./routes/pomodoro";
 import { getReport, updateReportSettings } from "./routes/report_conf";
 import {
   change_password,
@@ -97,6 +102,21 @@ app.openapi(updateUserSettings, async (c) => {
 
 app.openapi(updateReportSettings, async (c) => {
   const res = await updateReportSettings.handler(c);
+  return res;
+});
+
+app.openapi(create_challenge, async (c) => {
+  const res = await create_challenge.handler(c);
+  return res;
+});
+
+app.openapi(modify_challenge, async (c) => {
+  const res = await modify_challenge.handler(c);
+  return res;
+});
+
+app.openapi(delete_challenge, async (c) => {
+  const res = await delete_challenge.handler(c);
   return res;
 });
 

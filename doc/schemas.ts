@@ -84,10 +84,10 @@ export const ChallengeSchema = z.object({
   user_id: z.string().openapi({ example: "123" }),
   name: z.string().openapi({ example: "Challenge 1" }),
   description: z.string().openapi({ example: "Description of challenge" }),
-  time_stamp: z.string().openapi({ example: "2022-01-01" }),
   progress: z.number().openapi({ example: 90 }),
   criteria: z.string().openapi({ example: "Criteria of challenge" }),
   metric: z.string().openapi({ example: "Metric of challenge" }),
+  completed: z.boolean().openapi({ example: true }),
 });
 
 export const ShowChallengesSchema = ChallengeSchema.pick({
