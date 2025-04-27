@@ -1,5 +1,4 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { NumberSchema } from "../../doc/schemas";
 import {
   MainDataHandler,
   ShowCalendarHandler,
@@ -185,19 +184,4 @@ export const show_challenges = createRoute({
     },
   },
   handler: ShowChallengesHandler,
-});
-
-export const show_concentration_time = createRoute({
-  method: "get",
-  path: "/show_concentration_time",
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: NumberSchema,
-        },
-      },
-      description: "Show concentration time",
-    },
-  },
 });

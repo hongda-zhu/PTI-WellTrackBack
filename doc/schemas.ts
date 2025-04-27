@@ -130,6 +130,7 @@ export const PomodoroSchema = z.object({
 
 export const UpdatePomodoroSettingsSchema = z
   .object({
+    user_id: z.number().openapi({ example: 123 }),
     alert: z.boolean().openapi({ example: true }),
     pomodoro_restart: z.boolean().openapi({ example: true }),
     break_restart: z.boolean().openapi({ example: true }),
@@ -149,6 +150,9 @@ export const AiDataSchema = z.object({
   nivel_of_stress: z.number().openapi({
     example: 90,
   }),
+  concentrated: z.boolean().openapi({
+    example: true,
+  }),
 });
 
 export const MainDataSchema = z.object({
@@ -163,5 +167,26 @@ export const MainDataSchema = z.object({
   }),
   nivel_of_stress: z.number().openapi({
     example: 90,
+  }),
+});
+
+export const SetupSchema = z.object({
+  user_id: z.string().openapi({
+    example: "123",
+  }),
+  setup: z.number().openapi({
+    example: 1,
+  }),
+  work_time: z.number().openapi({
+    example: 25,
+  }),
+  short_break: z.number().openapi({
+    example: 5,
+  }),
+  long_break: z.number().openapi({
+    example: 15,
+  }),
+  name_challenge: z.string().openapi({
+    example: "Challenge 1",
   }),
 });

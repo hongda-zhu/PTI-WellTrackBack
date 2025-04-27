@@ -2,12 +2,15 @@ import { createRoute, z } from "@hono/zod-openapi";
 import {
   ChallengeSchema,
   PomodoroSchema,
+  SetupSchema,
   UpdatePomodoroSettingsSchema,
 } from "../../doc/schemas";
 import {
   create_challenge_handler,
+  create_setup_handler,
   delete_challenge_handler,
   modify_challenge_handler,
+  update_pomodoro_settings_handler,
 } from "../handler/pomodorohandler";
 
 export const setPomodoro = createRoute({
@@ -58,6 +61,7 @@ export const update_pomodoro_settings = createRoute({
       description: "Invalid request",
     },
   },
+  handler: update_pomodoro_settings_handler,
 });
 
 export const create_challenge = createRoute({
@@ -145,4 +149,32 @@ export const delete_challenge = createRoute({
     },
   },
   handler: delete_challenge_handler,
+});
+
+export const create_setup = createRoute({
+  method: "post",
+  path: "/create_setup",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: SetupSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "Setup created",
+    },
+    401: {
+      content: {
+        "application/json": {
+          schema: { message: "Invalid request" },
+        },
+      },
+      description: "Invalid request",
+    },
+  },
+  handler: create_setup_handler,
 });

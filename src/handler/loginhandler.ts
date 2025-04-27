@@ -88,6 +88,7 @@ export const verify_email_handler = async (c: Context) => {
 
   await db`INSERT INTO conf_user (user_id) = ${user.id}`;
   await db`INSERT INTO conf_report (user_id) = ${user.id}`;
+  await db`INSERT INTO conf_pomodoro (user_id) = ${user.id}`;
 
   // Eliminar el token
   await db`DELETE FROM token WHERE token = ${token}`;

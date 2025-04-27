@@ -5,6 +5,7 @@ import { db } from "../../lib/db";
 export const MainDataHandler = async (c: Context) => {
   const { user_id } = await c.req.json();
   try {
+    // Fetch data from the AI service
     const res = await fetch("http://192.168.1.100:5000/ia/datos");
     const json = await res.json();
     const data = AiDataSchema.parse(json);
@@ -12,13 +13,16 @@ export const MainDataHandler = async (c: Context) => {
     const existing =
       await db`SELECT * FROM user_data WHERE user_id = ${user_id} and last_updated = ${today}`;
     if (existing.length === 0) {
-      await db`INSERT INTO user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, last_updated) VALUES (${user_id}, 0, 0, ${data.posture_correction}, ${data.nivel_of_stress}, ${today})`;
+      await db`INSERT INTO user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, concentration_time, last_updated) VALUES (${user_id}, 0, 0, ${data.posture_correction}, ${data.nivel_of_stress}, 0, ${today})`;
     } else {
       if (data.hydration) {
         await db`UPDATE user_data SET hydration = hydration + 1 WHERE user_id = ${user_id}`;
       }
       if (data.breaks) {
         await db`UPDATE user_data SET breaks = breaks + 1 WHERE user_id = ${user_id}`;
+      }
+      if (data.concentrated) {
+        await db`UPDATE user_data SET concentration_time = concentration_time + 1 WHERE user_id = ${user_id}`;
       }
       await db`UPDATE user_data SET posture_correction = ${data.posture_correction}, nivel_of_stress = ${data.nivel_of_stress} WHERE user_id = ${user_id}`;
     }
@@ -28,6 +32,7 @@ export const MainDataHandler = async (c: Context) => {
       hydration: datos[0].hydration,
       nivel_of_stress: datos[0].nivel_of_stress,
       breaks: datos[0].breaks,
+      concentration_time: datos[0].concentration_time,
     });
   } catch (e) {
     const errorMessage =

@@ -12,8 +12,10 @@ import {
 } from "./routes/main";
 import {
   create_challenge,
+  create_setup,
   delete_challenge,
   modify_challenge,
+  update_pomodoro_settings,
 } from "./routes/pomodoro";
 import { getReport, updateReportSettings } from "./routes/report_conf";
 import {
@@ -117,6 +119,16 @@ app.openapi(modify_challenge, async (c) => {
 
 app.openapi(delete_challenge, async (c) => {
   const res = await delete_challenge.handler(c);
+  return res;
+});
+
+app.openapi(update_pomodoro_settings, async (c) => {
+  const res = await update_pomodoro_settings.handler(c);
+  return res;
+});
+
+app.openapi(create_setup, async (c) => {
+  const res = await create_setup.handler(c);
   return res;
 });
 
