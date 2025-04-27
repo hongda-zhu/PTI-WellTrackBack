@@ -1,4 +1,4 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import { UpdateReportSettingsSchema } from "../../doc/schemas";
 import {
   get_report_handler,
@@ -34,8 +34,17 @@ export const updateReportSettings = createRoute({
 });
 
 export const getReport = createRoute({
-  method: "get",
+  method: "post",
   path: "/get_report",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: z.object({ user_id: z.number(), report_date: z.string() }),
+        },
+      },
+    },
+  },
   responses: {
     200: {
       content: {
