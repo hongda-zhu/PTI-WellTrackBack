@@ -3,7 +3,7 @@ import ENV from "../config/env";
 
 export const db = new SQL({
   // Required
-  url: `postgres://${ENV.POSTGRES_USER}:${ENV.POSTGRES_PASSWORD}@localhost:5432/${ENV.POSTGRES_DB}`,
+  url: `postgres://${ENV.POSTGRES_USER}:${ENV.POSTGRES_PASSWORD}@db:5432/${ENV.POSTGRES_DB}`,
 
   // Optional configuration
   // hostname: ENV.POSTGRES_HOST,
