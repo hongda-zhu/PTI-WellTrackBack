@@ -1,14 +1,14 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import {
-  MainDataHandler,
   ShowCalendarHandler,
   ShowChallengesHandler,
+  ShowUserDataHandler,
   WeeklyAnalysisHandler,
 } from "../handler/mainhandler";
 
-export const update_data = createRoute({
+export const show_data = createRoute({
   method: "post",
-  path: "/update_data",
+  path: "/show_data",
   request: {
     body: {
       content: {
@@ -33,7 +33,7 @@ export const update_data = createRoute({
       description: "Invalid request",
     },
   },
-  handler: MainDataHandler,
+  handler: ShowUserDataHandler,
 });
 
 // export const calculate_perc_posture = createRoute({

@@ -7,9 +7,10 @@ import { login, recoverPassword, register, verifyemail } from "./routes/login";
 import {
   show_calendar,
   show_challenges,
+  show_data,
   show_weekly_analysis,
-  update_data,
 } from "./routes/main";
+import { show_data_metrics } from "./routes/metrics";
 import {
   create_challenge,
   create_setup,
@@ -67,8 +68,8 @@ app.openapi(recoverPassword, async (c) => {
   return res;
 });
 
-app.openapi(update_data, async (c) => {
-  const res = await update_data.handler(c);
+app.openapi(show_data, async (c) => {
+  const res = await show_data.handler(c);
   return res;
 });
 
@@ -129,6 +130,11 @@ app.openapi(update_pomodoro_settings, async (c) => {
 
 app.openapi(create_setup, async (c) => {
   const res = await create_setup.handler(c);
+  return res;
+});
+
+app.openapi(show_data_metrics, async (c) => {
+  const res = await show_data_metrics.handler(c);
   return res;
 });
 
