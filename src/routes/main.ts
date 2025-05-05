@@ -4,7 +4,28 @@ import {
   ShowChallengesHandler,
   ShowUserDataHandler,
   WeeklyAnalysisHandler,
+  HealthCheckHandler,
 } from "../handler/mainhandler";
+
+export const healthCheckRoute = createRoute({
+  method: "get",
+  path: "/health",
+  tags: ["Health"],
+  summary: "Performs a health check",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({ 
+            message: z.string(),
+          }).openapi({example: { message: "has hecho bien" }}),
+        },
+      },
+      description: "Service is healthy",
+    },
+  },
+  handler: HealthCheckHandler,
+});
 
 export const show_data = createRoute({
   method: "post",

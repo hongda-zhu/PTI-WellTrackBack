@@ -141,3 +141,9 @@ export const ShowChallengesHandler = async (c: Context) => {
     return c.json({ message: "Error fetching challenges" }, 500);
   }
 };
+
+// === NEW Health Check Handler ===
+export const HealthCheckHandler = async (c) => {
+  // Simply return a success message
+  return c.json({ message: "has hecho bien" }, 200);
+};
