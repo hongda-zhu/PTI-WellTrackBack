@@ -9,6 +9,7 @@ import {
   show_challenges,
   show_data,
   show_weekly_analysis,
+  healthCheckRoute,
 } from "./routes/main";
 import { show_data_metrics } from "./routes/metrics";
 import {
@@ -185,6 +186,10 @@ app.get(
     pageTitle: "PTI API Reference",
   })
 );
+
+// === Add Registration for Health Check Route ===
+app.openapi(healthCheckRoute, healthCheckRoute.handler);
+// ============================================
 
 // Set up Swagger UI
 export default {
