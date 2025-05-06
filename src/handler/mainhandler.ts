@@ -143,7 +143,7 @@ export const ShowChallengesHandler = async (c: Context) => {
 };
 
 // === NEW Health Check Handler ===
-export const HealthCheckHandler = async (c) => {
+export const HealthCheckHandler = async (c: Context) => {
   // Simply return a success message
   return c.json({ message: "has hecho bien" }, 200);
 };

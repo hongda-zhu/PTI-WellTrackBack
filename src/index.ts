@@ -139,10 +139,8 @@ app.openapi(show_data_metrics, async (c) => {
   return res;
 });
 
-app.openapi(getReport, async (c) => {
-  const res = await getReport.handler(c);
-  return c.json(res);
-});
+// Assert the route definition type as any to bypass strict check
+app.openapi(getReport as any, getReport.handler);
 
 // Google OAuth for login
 app.use(
