@@ -9,9 +9,9 @@ import {
 
 export const healthCheckRoute = createRoute({
   method: "get",
-  path: "/health",
-  tags: ["Health"],
-  summary: "Performs a health check",
+  path: "/ejemploA",
+  tags: ["ejemploA"],
+  summary: "Performs a ejemploA check",
   responses: {
     200: {
       content: {
