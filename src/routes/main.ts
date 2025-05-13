@@ -9,16 +9,16 @@ import {
 
 export const healthCheckRoute = createRoute({
   method: "get",
-  path: "/ejemploA",
-  tags: ["ejemploA"],
-  summary: "Performs a ejemploA check",
+  path: "/health",
+  tags: ["Health"],
+  summary: "Performs a health check",
   responses: {
     200: {
       content: {
         "application/json": {
           schema: z.object({ 
             message: z.string(),
-          }).openapi({example: { message: "has hecho bien" }}),
+          }).openapi({example: { message: "has hecho bien x2" }}),
         },
       },
       description: "Service is healthy",
