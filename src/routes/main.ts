@@ -18,7 +18,7 @@ export const healthCheckRoute = createRoute({
         "application/json": {
           schema: z.object({ 
             message: z.string(),
-          }).openapi({example: { message: "has hecho bien x2" }}),
+          }).openapi({example: { message: "holaholaholaholaholahola" }}),
         },
       },
       description: "Service is healthy",
